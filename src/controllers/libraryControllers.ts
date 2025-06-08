@@ -1,5 +1,6 @@
 import { Book } from "../models/bookModels"
 import { Request, Response } from "express"
+import { IBook } from "../interfaces/Book"
 
 const getAllBooks = async ( req: Request, res: Response): Promise <any> => 
     {
@@ -29,5 +30,21 @@ const getBookById = async ( req: Request, res: Response): Promise <any> => {
     }
 }
 
+const createBook = async ( req: Request, res: Response): Promise <any> => {
+    const body = req.body
+        const {title, author, publishedYear, genre, description} = body
+        if(!title || !author || !publishedYear || !genre || !description) return res.json({succes: false, message: "data invalida"})
+    try {
+        const newBookData: IBook = { title, author, publishedYear, genre, available: true }
 
-export { getAllBooks, getBookById }
+        const newBook = new Book (newBookData)
+        await newBook.save()
+
+        return res.json({succes: true, data: newBook, message: "Libro creado correctamente"})
+    }  catch (error:any) {
+        return res.json({succes: false, error: error.message})
+    }
+}
+
+
+export { getAllBooks, getBookById, createBook }
