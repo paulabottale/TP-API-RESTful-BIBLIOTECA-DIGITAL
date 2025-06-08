@@ -46,5 +46,18 @@ const createBook = async ( req: Request, res: Response): Promise <any> => {
     }
 }
 
+const updateBook = async ( req: Request, res: Response): Promise <any> => {
+   const id = req.params.id
+    const body = req.body
 
-export { getAllBooks, getBookById, createBook }
+    try {
+        const updatedBook = await Book.findByIdAndUpdate(id, body, { new: true })
+        if (!updatedBook) return res.status(404).json({ sucess: false, message: "Libro no encontrado" })
+        return res.json({ sucess: true, data: updatedBook, message: "Libro actualizado con exito"})
+    } catch (error: any) {
+        return res.status(500).json({ sucess: false, message: error.message})
+    } 
+}
+
+
+export { getAllBooks, getBookById, createBook, updateBook }
