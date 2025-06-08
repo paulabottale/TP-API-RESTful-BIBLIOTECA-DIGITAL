@@ -59,5 +59,16 @@ const updateBook = async ( req: Request, res: Response): Promise <any> => {
     } 
 }
 
+const deleteBook = async ( req: Request, res: Response): Promise <any> => {
+    const id = req.params.id
+    try {
+        const deletedBook = await Book.findByIdAndDelete(id)
+        if (!deletedBook) return res.status(404).json({ succes: false, message: "Libro no encontrado" })
+        return res.json({ succes: true, data: deletedBook, message: "Libro borrado con existo" })
+    } catch (error: any) {
+        return res.status(500).json({ succes: false, message: error.message})
+    }
+}
 
-export { getAllBooks, getBookById, createBook, updateBook }
+
+export { getAllBooks, getBookById, createBook, updateBook, deleteBook }
