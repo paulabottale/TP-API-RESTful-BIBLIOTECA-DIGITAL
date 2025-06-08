@@ -32,10 +32,10 @@ const getBookById = async ( req: Request, res: Response): Promise <any> => {
 
 const createBook = async ( req: Request, res: Response): Promise <any> => {
     const body = req.body
-        const {title, author, publishedYear, genre, description} = body
-        if(!title || !author || !publishedYear || !genre || !description) return res.json({succes: false, message: "data invalida"})
+        const {title, author, publishedYear, genre, available} = body
+        if(!title || !author) return res.json({succes: false, message: "data invalida"})
     try {
-        const newBookData: IBook = { title, author, publishedYear, genre, available: true }
+        const newBookData: IBook = { title, author, publishedYear, genre, available}
 
         const newBook = new Book (newBookData)
         await newBook.save()
